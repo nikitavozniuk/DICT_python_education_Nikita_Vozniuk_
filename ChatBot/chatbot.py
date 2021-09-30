@@ -25,3 +25,25 @@ for i in range(number+1):
     print("{} !\n".format(i))
 
 print("Completed, have a nice day!")
+
+print("Let's test your programming knowledge.")
+print("""
+Why do we use methods?
+1. To repeat a statement multiple times.
+2. To decompose a program into several small subroutines.
+3. To determine the execution time of a program.
+4. To interrupt the execution of a program.
+""")
+
+
+def test():
+    input_number = int(input())
+    if input_number == 2:
+        print("Congratulations, have a nice day!")
+        return
+    else:
+        print("Please, try again.")
+        test()
+
+
+test()
