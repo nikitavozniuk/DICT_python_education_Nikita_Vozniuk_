@@ -14,6 +14,7 @@ def start():
     guess = word.replace(word, "-" * len(word))
     while word != guess:
         if attempts == 0:
+            print("You lost!")
             return
 
         guess_list = list(guess)
@@ -22,14 +23,23 @@ def start():
 
         if letter not in word:
             print("That letter doesn't appear in the word")
+            attempts -= 1
         else:
-            for index, item in enumerate(word):
-                if letter == item:
-                    guess_list[index] = item
-                    guess = "".join(guess_list)
-        attempts -= 1
+            if letter in guess:
+                print("No improvements")
+                attempts -= 1
+            else:
+                for index, item in enumerate(word):
+                    if letter == item:
+                        guess_list[index] = item
+                        guess = "".join(guess_list)
+    if "-" not in guess:
+        print(guess)
+        print("You guessed the word!")
+        print("You survived!")
+        return
 
 
 start()
-print("Thanks for playing!")
-print("We'll see how well you did in the next stage")
+# print("Thanks for playing!")
+# print("We'll see how well you did in the next stage")
