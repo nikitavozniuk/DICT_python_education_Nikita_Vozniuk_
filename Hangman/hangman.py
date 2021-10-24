@@ -4,8 +4,18 @@ print("""
 HANGMAN
 """)
 
-words = ["python", "java", "javascript", "php", "c++"]
+words = ["python", "java", "javascript", "php"]
 word = random.choice(words)
+
+
+def game_loop():
+    command = str(input('Type "play" to play the game, "exit" to quit: '))
+    if command == "play":
+        start()
+    elif command != "quit":
+        game_loop()
+    else:
+        return
 
 
 def start():
@@ -15,7 +25,7 @@ def start():
     while word != guess:
         if attempts == 0:
             print("You lost!")
-            return
+            game_loop()
 
         guess_list = list(guess)
         print(guess)
@@ -45,7 +55,7 @@ def start():
         print(guess)
         print("You guessed the word!")
         print("You survived!")
-        return
+        game_loop()
 
 
-start()
+game_loop()
