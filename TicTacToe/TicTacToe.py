@@ -1,3 +1,15 @@
-print('X 0 X')
-print('0 X 0')
-print('X X 0')
+cells = list(input("Enter cells: "))
+print("---------")
+print("| ", end="")
+for item in cells[:3]:
+    print(item, end=" ")
+print("|")
+print("| ", end="")
+for item in cells[3:6]:
+    print(item, end=" ")
+print("|")
+print("| ", end="")
+for item in cells[6:9]:
+    print(item, end=" ")
+print("|")
+print("---------")
