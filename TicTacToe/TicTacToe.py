@@ -5,20 +5,25 @@ X = cells.count("X")
 O = cells.count("O")
 cells_ = cells.count("_")
 
-print("---------")
-print("| ", end="")
-for item in cells[:3]:
-    print(item, end=" ")
-print("|")
-print("| ", end="")
-for item in cells[3:6]:
-    print(item, end=" ")
-print("|")
-print("| ", end="")
-for item in cells[6:9]:
-    print(item, end=" ")
-print("|")
-print("---------")
+
+def printCells():
+    print("---------")
+    print("| ", end="")
+    for item in cells[:3]:
+        print(item, end=" ")
+    print("|")
+    print("| ", end="")
+    for item in cells[3:6]:
+        print(item, end=" ")
+    print("|")
+    print("| ", end="")
+    for item in cells[6:9]:
+        print(item, end=" ")
+    print("|")
+    print("---------")
+
+
+printCells()
 
 
 def checkBoard():
@@ -44,6 +49,26 @@ def checkBoard():
 checkBoard()
 
 
+def validateInput(coordinates):
+    if type(coordinates[0]) == str() and type(coordinates[1]) == str():
+        print('You should enter numbers!')
+        return inputCells()
+
+    if 0 < coordinates[0] < 4 and 0 < coordinates[1] < 4:
+        if coordinates == (1, 1):
+            if cells[0] == "_":
+                cells[0] = "X"
+                printCells()
+    else:
+        print('Coordinates should be from 1 to 3!')
+        return inputCells()
+
+
+def inputCells():
+    inp = tuple(int(x.strip()) for x in input('Enter the coordinates: ').split(' '))
+    validateInput(inp)
+
+
 if count == 0 or count == 1:
     if X == O + 1 or X == O - 1 or X == O:
         if cells[0] == cells[1] == cells[2] != "_":
@@ -63,7 +88,7 @@ if count == 0 or count == 1:
         elif cells[0] == cells[3] == cells[6] != "_":
             print(cells[3] + " wins")
         elif cells_ > 0:
-            print("You don't finish game!")
+            inputCells()
         else:
             print("Draw!")
     else:
