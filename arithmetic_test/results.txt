@@ -1,0 +1,2 @@
+Alex: 4/5 in level 1 (simple operations with numbers 2-9).
+Nikita: 4/5 in level 2 (squaring numbers from 11 to 29).
