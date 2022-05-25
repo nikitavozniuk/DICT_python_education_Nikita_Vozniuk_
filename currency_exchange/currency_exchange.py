@@ -1,11 +1,16 @@
-currencies = {
-    "CAD": 1.29,
-    "UAH": 29.53,
-    "YEN": 126.94
-}
+import json
+import requests
 
-coins = float(input())
+currencies = ["USD", "EUR"]
+currency = input()
 
-for index, item in enumerate(currencies):
-    total = round(coins * currencies[item], 2)
-    print(f"I will get {total} {item} from the sale of {coins} mycoins.")
+try:
+    response = requests.get(f"http://www.floatrates.com/daily/{currency}.json")
+    parsed = json.loads(response.content)
+
+    usd = round(parsed["usd"]["rate"], 2)
+    eur = round(parsed["eur"]["rate"], 2)
+    print(f"USD: {usd}")
+    print(f"EUR: {eur}")
+except requests.exceptions.RequestException as e:
+    raise SystemExit(e)
