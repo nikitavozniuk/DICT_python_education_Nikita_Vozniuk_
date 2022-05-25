@@ -1,8 +1,11 @@
-i_number_of_coins = "Please, enter the number of mycoins you have: "
-i_exchange_rate = "Please, enter the exchange rate: "
-i_total_amount = "The total amount of dollars: "
+currencies = {
+    "CAD": 1.29,
+    "UAH": 29.53,
+    "YEN": 126.94
+}
 
-coins = float(input(i_number_of_coins))
-rate = float(input(i_exchange_rate))
+coins = float(input())
 
-print(f"{i_total_amount} {coins * rate}")
+for index, item in enumerate(currencies):
+    total = round(coins * currencies[item], 2)
+    print(f"I will get {total} {item} from the sale of {coins} mycoins.")
