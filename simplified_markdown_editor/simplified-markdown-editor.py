@@ -1,3 +1,5 @@
+import os
+
 markdowns = ["plain", "bold", "italic", "inline-code", "link", "header", "unordered-list", "ordered-list", "new-line"]
 list_commands = ["!help", "!done"]
 
@@ -26,8 +28,8 @@ class Markdown:
             return False
 
     def unorderedList(self):
-        rows = int(input(number_of_rows_input))
         try:
+            rows = int(input(number_of_rows_input))
             if rows > 0:
                 for value in range(rows):
                     element_text = input(f"Row #{value + 1}: ")
@@ -41,19 +43,19 @@ class Markdown:
             print(out_fail)
 
     def orderedList(self):
-        rows = int(input(number_of_rows_input))
-        if rows > 0:
-            try:
+        try:
+            rows = int(input(number_of_rows_input))
+            if rows > 0:
                 for value in range(rows):
                     element_text = input(f"Row #{value + 1}: ")
                     if len(self.list_markdown) > 0:
                         self.list_markdown.append(f"\n{value + 1}. {element_text}")
                     else:
                         self.list_markdown.append(f"{value + 1}. {element_text}")
-            except ValueError:
-                print(out_fail)
-        else:
-            print(number_of_rows_fail)
+            else:
+                print(number_of_rows_fail)
+        except ValueError:
+            print(out_fail)
 
     def newLine(self):
         self.list_markdown.append(f"\n")
@@ -79,21 +81,21 @@ class Markdown:
     
     def bold(self, value):
         if len(self.list_markdown) > 0:
-            self.list_markdown.append(f"\n{value}")
+            self.list_markdown.append(f"\n**{value}**")
         else:
             self.list_markdown.append(f"**{value}**")
 
     def italic(self, value):
         if len(self.list_markdown) > 0:
-            self.list_markdown.append(f"\n{value}")
+            self.list_markdown.append(f"\n*{value}*")
         else:
             self.list_markdown.append(f"*{value}*")
 
     def inlineCode(self, value):
         if len(self.list_markdown) > 0:
-            self.list_markdown.append(f"\n`{value}`")
+            self.list_markdown.append(f"\n`\n{value}\n`")
         else:
-            self.list_markdown.append(f"`{value}`")
+            self.list_markdown.append(f"`\n{value}\n`")
 
     def link(self, label, url):
         if len(self.list_markdown) > 0:
@@ -156,6 +158,9 @@ def main():
         elif formatted == False:
             print(out_fail)
         else:
+            f = open("output.md", "w")
+            f.write("".join(map(lambda x: str(x), markdown.list_markdown)))
+            f.close()
             break
     
 
