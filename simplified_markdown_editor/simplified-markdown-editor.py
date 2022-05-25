@@ -6,11 +6,13 @@ out_range = "The level should be within the range of 1 to 6"
 out_commands = "Special commands"
 out_choice = "Choose a formatter: "
 out_fail = "Unknown formatting type or command"
+number_of_rows_fail = "The number of rows should be greater than zero"
 
 text_input = "Text: "
 level_input = "Level: "
 label_input = "Label: "
 url_input = "URL: "
+number_of_rows_input = "Number of rows: "
 
 class Markdown:
     list_markdown = []
@@ -22,6 +24,36 @@ class Markdown:
             return True
         else:
             return False
+
+    def unorderedList(self):
+        rows = int(input(number_of_rows_input))
+        try:
+            if rows > 0:
+                for value in range(rows):
+                    element_text = input(f"Row #{value + 1}: ")
+                    if len(self.list_markdown) > 0:
+                        self.list_markdown.append(f"\n* {element_text}")
+                    else:
+                        self.list_markdown.append(f"* {element_text}")
+            else:
+                print(number_of_rows_fail)
+        except ValueError:
+            print(out_fail)
+
+    def orderedList(self):
+        rows = int(input(number_of_rows_input))
+        if rows > 0:
+            try:
+                for value in range(rows):
+                    element_text = input(f"Row #{value + 1}: ")
+                    if len(self.list_markdown) > 0:
+                        self.list_markdown.append(f"\n{value + 1}. {element_text}")
+                    else:
+                        self.list_markdown.append(f"{value + 1}. {element_text}")
+            except ValueError:
+                print(out_fail)
+        else:
+            print(number_of_rows_fail)
 
     def newLine(self):
         self.list_markdown.append(f"\n")
@@ -102,6 +134,12 @@ class Markdown:
                 print(*self.list_markdown) 
             except ValueError:
                 print(out_fail)  
+        elif type == "unordered-list":
+            self.unorderedList()
+            print(*self.list_markdown)
+        elif type == "ordered-list":
+            self.orderedList()
+            print(*self.list_markdown)
         elif type == "!help":
             self.help()
 
