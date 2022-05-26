@@ -12,16 +12,22 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
 }
 
+path = os.getcwd()
+
 class WebScrapper:
     data = []
     titles = []
     _temp = []
+    _tag = None
 
-    def saveTitles(self):
+    def __init__(self, tag) -> None:
+        self._tag = tag
+
+    def saveTitles(self, page):
         for index, title in enumerate(self.titles):
             file = None
             try:
-                file = open(f"{os.getcwd()}\web_page_scraper\{title}.txt", 'w')
+                file = open(f"{path}\web_page_scraper\Page_{page}\{title}.txt", 'w')
             except IOError:
                 print("Unable to create file on disk.")
                 file.close()
@@ -30,7 +36,10 @@ class WebScrapper:
                 file.write(self.data[index]["title"])
                 print(f"{self.data[index]['title']} saved.")
                 file.close()
-        print(f"Saved articles: {self.titles}")
+        self.data = []
+        self.titles = []
+        self._temp = []
+        print(f"Saved all articles.")
 
     def formatTitles(self):
         for item in self.data:
@@ -46,17 +55,15 @@ class WebScrapper:
         for index, tag in enumerate(soup.find_all('span', { 'data-test': 'article.type' })):
             _tag = tag.find('span')
             self._temp[index]["tag"] = _tag.text
-            print(f"Tags 1: {_tag.text}")
         for value in self._temp:
-            if "News" in value["tag"]:
-                print(f"Tags 2: {value}")
+            if self._tag in value["tag"]:
                 self.data.append(value)
 
-    def startScrapping(self, soup):
+    def startScrapping(self, soup, page):
         self.setTitles(soup)
         self.setTags(soup)
         self.formatTitles()
-        self.saveTitles()
+        self.saveTitles(page)
 
     def makeRequest(self, method, url, query_params=None, body=None, headers=None):
         try:
@@ -77,12 +84,16 @@ class WebScrapper:
         
 
 def main():
-    webScrapper = WebScrapper()
-    url = input("Input the URL: ")
-    page_content = webScrapper.makeRequest("GET", url).content
+    pages = int(input("Input number of pages: "))
+    tag = input("Input tag name: ")
+    webScrapper = WebScrapper(tag)
 
-    soup = BeautifulSoup(page_content, 'html.parser')
-    webScrapper.startScrapping(soup)
+    for i in range(pages):
+        page = i + 1
+        os.mkdir(f"{path}\web_page_scraper\Page_{page}")
+        page_content = webScrapper.makeRequest("GET", f"https://www.nature.com/nature/articles?sort=PubDate&year=2022&page={page}").content
+        soup = BeautifulSoup(page_content, 'html.parser')
+        webScrapper.startScrapping(soup, page)
 
 
 if __name__ == "__main__":
